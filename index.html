@@ -2,13 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Wasm Testing</title>
+		<title>Paint in Rust</title>
 		<link data-trunk rel="rust" />
 
 		<style>
 			body {
 				background-color: #111;
-				position: absolute;
 			}
 			canvas {
 				border: 1px solid black;
@@ -19,6 +18,7 @@
 	</head>
 
 	<body>
-		<canvas id="canvas" width="750" height="750"></canvas>
+		<button id="reset">Clear canvas</button>
+		<canvas id="canvas" width="1000" height="1000"></canvas>
 	</body>
 </html>

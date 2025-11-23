@@ -9,11 +9,10 @@ use web_sys::{
 	Element,
 	Document,
 	DomRect,
+	HtmlButtonElement
 };
 use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::*;
-
-
 
 pub fn get_document() -> Result<Document, JsValue> {
 	window()
@@ -119,4 +118,27 @@ pub fn on_mouse_up(
 	})as Box<dyn FnMut(_)>);
 	canvas.set_onmouseup(Some(ms_up.as_ref().unchecked_ref()));
 	ms_up.forget();
+}
+
+pub fn create_button(
+	element_id: &str,
+	document: &Document
+) -> Result<HtmlButtonElement, JsValue> {
+	document
+		.get_element_by_id(element_id)
+		.ok_or(JsValue::from_str(&format!("{element_id} does not exist in document")))?
+		.dyn_into::<HtmlButtonElement>()
+		.map_err(|_| JsValue::from_str("Failed to cast into HtmlButtonElement"))
+		
+}
+
+pub fn attach_reset_button_handler(
+	button: &HtmlButtonElement,
+	context_mut: Rc<RefCell<CanvasRenderingContext2d>>
+) {
+	let on_reset_click = Closure::wrap(Box::new(move |_: MouseEvent| {
+		context_mut.borrow_mut().reset();
+	})as Box<dyn FnMut(_)>);
+	button.set_onclick(Some(on_reset_click.as_ref().unchecked_ref()));
+	on_reset_click.forget();
 }

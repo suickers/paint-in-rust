@@ -18,9 +18,12 @@ pub fn start() -> Result<(), JsValue> {
 	let canvas_left = field.left();
 	let canvas_top = field.top();
 
-
 	let context_mut = Rc::new(RefCell::new(context));
 	let is_drawing = Rc::new(RefCell::new(false));
+
+	let reset_btn = create_button("reset", &document)?;
+	
+	attach_reset_button_handler(&reset_btn, context_mut.clone());
 
 	on_mouse_down(
 		&canvas,
